@@ -167,14 +167,14 @@
 
 @interface JKExpandTableView : UITableView
     <UITableViewDataSource, UITableViewDelegate, JKSubTableViewCellDelegate> {
-    __weak id tableViewDelegate;
-    __weak id dataSourceDelegate;
+    id tableViewDelegate;
+    id dataSourceDelegate;
     NSMutableArray * expansionStates;
 }
 
 - (id)initWithFrame:(CGRect)frame dataSource:dataDelegate tableViewDelegate:tableDelegate;
 
-@property(nonatomic,weak) id<JKExpandTableViewDelegate> tableViewDelegate;
+@property(nonatomic) id<JKExpandTableViewDelegate> tableViewDelegate;
 @property(nonatomic,weak,getter = getDataSourceDelegate, setter = setDataSourceDelegate:) id<JKExpandTableViewDataSource> dataSourceDelegate;
 @property(nonatomic,strong) NSMutableArray * expansionStates;
 

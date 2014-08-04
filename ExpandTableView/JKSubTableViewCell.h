@@ -41,7 +41,7 @@
 
 @interface JKSubTableViewCell : UITableViewCell <UITableViewDataSource,UITableViewDelegate> {
     UITableView *insideTableView;
-    __weak id delegate;
+    id delegate;
     UIColor *bgColor;
     UIColor *fgColor;
     UIFont *font;
