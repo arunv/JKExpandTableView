@@ -85,7 +85,7 @@
     CGFloat icon2LabelPadding = 6.0;
     CGFloat checkMarkPadding = 16.0;
     
-    CGFloat auxLabelWidth = 50;
+    CGFloat auxLabelWidth = 60;
     
     [self.contentView setAutoresizesSubviews:YES];
 
@@ -114,6 +114,7 @@
     
     CGFloat labelWidth = contentAreaWidth - XOffset - checkMarkWidth - checkMarkPadding - auxLabelWidth;
     self.auxLabel.frame = CGRectMake(vLeft(self.expansionIndicatorImage) - auxLabelWidth - icon2LabelPadding,  0, auxLabelWidth, contentAreaHeight);
+    self.auxLabel.numberOfLines = 2;
     auxLabel.font = [self.label.font fontWithSize:12];
     
     self.label.frame = CGRectMake(XOffset, 0, labelWidth, contentAreaHeight);

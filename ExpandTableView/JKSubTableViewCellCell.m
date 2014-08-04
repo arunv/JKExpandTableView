@@ -73,7 +73,7 @@
     CGFloat sidePadding = 22.0;
     CGFloat icon2LabelPadding = 6.0;
     CGFloat checkMarkPadding = 16.0;
-    CGFloat auxLabelWidth = 100.0;
+    CGFloat auxLabelWidth = 60.0;
     [self.contentView setAutoresizesSubviews:YES];
     
     self.iconImage.frame = CGRectMake(sidePadding, (contentAreaHeight - iconHeight)/2, iconWidth, iconHeight);
@@ -103,6 +103,7 @@
     CGFloat labelWidth = contentAreaWidth - XOffset - auxLabelWidth;
     self.titleLabel.frame = CGRectMake(XOffset, 0, labelWidth, contentAreaHeight);
     self.auxLabel.frame = CGRectMake(contentAreaWidth - sidePadding - auxLabelWidth, 0, auxLabelWidth, contentAreaHeight);
+    self.auxLabel.numberOfLines = 2;
 
     //self.titleLabel.backgroundColor = [UIColor purpleColor];
     //self.selectionIndicatorImg.backgroundColor = [UIColor yellowColor];
