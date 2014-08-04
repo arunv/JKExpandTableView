@@ -302,22 +302,7 @@
         }
         if ([self.dataSourceDelegate respondsToSelector:@selector(imageStyleForParentIndex:)]) {
             JKExpandTableViewCellImageStyle imageStyle = [self.dataSourceDelegate imageStyleForParentIndex:parentIndex];
-            switch (imageStyle) {
-                case JKExpandTableViewCellImageStyleSquare:
-                    cell.iconImage.layer.cornerRadius = 0;
-                    cell.iconImage.layer.masksToBounds = NO;
-                    break;
-                case JKExpandTableViewCellImageStyleCircle:
-                    cell.iconImage.layer.cornerRadius = cell.iconImage.image.size.height / 2.0;
-                    cell.iconImage.layer.masksToBounds = YES;
-                    break;
-                case JKExpandTableViewCellImageStyleRoundedRect:
-                    cell.iconImage.layer.cornerRadius = cell.iconImage.image.size.height * 0.2;
-                    cell.iconImage.layer.masksToBounds = YES;
-                    break;
-                default:
-                    break;
-            }
+            cell.imageStyle = imageStyle;
         }
         
         if ([self.dataSourceDelegate respondsToSelector:@selector(expansionIndicatorIconForParentCellAtIndex:)]) {
@@ -387,7 +372,6 @@
                  underParentIndex:(NSInteger)parentIndex {
     
     // check if at least one child is selected.  if yes, set the parent checkmark to indicate at least one chlid selected
-    
     if (isSwitchedOn &&
         [self.tableViewDelegate respondsToSelector:@selector(tableView:didSelectCellAtChildIndex:withInParentCellIndex:)]) {
         [self.tableViewDelegate tableView:self didSelectCellAtChildIndex:childIndex withInParentCellIndex:parentIndex];
@@ -456,5 +440,100 @@
     }
     return result;
 }
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidScroll:)]) {
+        [self.tableViewDelegate scrollViewDidScroll:scrollView];
+    }
+}
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidZoom:)]) {
+        [self.tableViewDelegate scrollViewDidZoom:scrollView];
+    }
+}
+
+// called on start of dragging (may require some time and or distance to move)
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewWillBeginDragging:)]) {
+        [self.tableViewDelegate scrollViewWillBeginDragging:scrollView];
+    }
+}
+// called on finger up if the user dragged. velocity is in points/millisecond. targetContentOffset may be changed to adjust where the scroll view comes to rest
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)]) {
+        [self.tableViewDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+    }
+}
+// called on finger up if the user dragged. decelerate is true if it will continue moving afterwards
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)]) {
+        [self.tableViewDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    }
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView;   // called on finger up as we are moving
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewWillBeginDecelerating:)]) {
+        [self.tableViewDelegate scrollViewWillBeginDecelerating:scrollView];
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;      // called when scroll view grinds to a halt
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
+        [self.tableViewDelegate scrollViewDidEndDecelerating:scrollView];
+    }
+}
+
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView; // called when setContentOffset/scrollRectVisible:animated: finishes. not called if not animating
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)]) {
+        [self.tableViewDelegate scrollViewDidEndScrollingAnimation:scrollView];
+    }
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView;     // return a view that will be scaled. if delegate returns nil, nothing happens
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(viewForZoomingInScrollView:)]) {
+        return [self.tableViewDelegate viewForZoomingInScrollView:scrollView];
+    }
+    
+    return nil;
+}
+- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewWillBeginZooming:withView:)]) {
+        [self.tableViewDelegate scrollViewWillBeginZooming:scrollView withView:view];
+    }
+}
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale; // scale between minimum and maximum. called after any 'bounce' animations
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidEndZooming:withView:atScale:)]) {
+        [self.tableViewDelegate scrollViewDidEndZooming:scrollView withView:view atScale:scale];
+    }
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView;   // return a yes if you want to scroll to the top. if not defined, assumes YES
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewShouldScrollToTop:)]) {
+        return [self.tableViewDelegate scrollViewShouldScrollToTop:scrollView];
+    }
+    
+    return NO;
+}
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView;      // called when scrolling animation finished. may be called immediately if already at top
+{
+    if ([self.tableViewDelegate respondsToSelector:@selector(scrollViewDidScrollToTop:)]) {
+        [self.tableViewDelegate scrollViewDidScrollToTop:scrollView];
+    }
+}
+
+
 
 @end

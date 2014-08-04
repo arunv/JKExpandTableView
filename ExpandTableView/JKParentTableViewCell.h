@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JKExpandTableViewImageStyle.h"
 
 @interface JKParentTableViewCell : UITableViewCell {
     UIImageView *iconImage;
@@ -22,6 +23,7 @@
 @property (nonatomic,strong) UIImageView *selectionIndicatorImgView;
 @property (nonatomic,strong) UIImageView *expansionIndicatorImage;
 @property (nonatomic) NSInteger parentIndex;
+@property JKExpandTableViewCellImageStyle imageStyle;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 - (void)setupDisplay;

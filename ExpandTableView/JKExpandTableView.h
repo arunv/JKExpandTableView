@@ -14,7 +14,7 @@
  @protocol JKExpandTableViewDelegate
  @discussion Users of this class must implement this protocol.
  */
-@protocol JKExpandTableViewDelegate <NSObject>
+@protocol JKExpandTableViewDelegate <UIScrollViewDelegate>
 @required
 
 /*! Within a single JKExpandTableView, it is permissible to have a mix of multi-selectables and non-multi-selectables.

@@ -7,10 +7,11 @@
 //
 
 #import "JKParentTableViewCell.h"
+#import "JKExpandTableViewImageStyle.h"
 
 @implementation JKParentTableViewCell
 
-@synthesize label,iconImage,selectionIndicatorImgView,parentIndex,selectionIndicatorImg,expansionIndicatorImage,auxLabel;
+@synthesize label,iconImage,selectionIndicatorImgView,parentIndex,selectionIndicatorImg,expansionIndicatorImage,auxLabel, imageStyle;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier; {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
@@ -20,11 +21,12 @@
         return self;
     }
     self.contentView.backgroundColor = [UIColor clearColor];
+    self.imageStyle = JKExpandTableViewCellImageStyleSquare;
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.iconImage = [[UIImageView alloc] initWithFrame:CGRectZero];
-    //[self.iconImage setContentMode:UIViewContentModeCenter];
+    [self.iconImage setContentMode:UIViewContentModeCenter];
     [self.contentView addSubview:iconImage];
     
     self.label = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -64,11 +66,11 @@
     CGFloat checkMarkWidth = 0.0;
     CGFloat arrowWidth = 0.0;
     CGFloat arrowHeight = 0.0;
-    CGFloat iconHeight = 0.0; //  set this according to icon
-    CGFloat iconWidth = 0.0;
+    CGFloat iconHeight = 27.0; //  set this according to icon
+    CGFloat iconWidth = 27.0;
     if (self.iconImage.image) {
-        iconWidth = MIN(contentAreaWidth, self.iconImage.image.size.width);
-        iconHeight = MIN(contentAreaHeight, self.iconImage.image.size.height);
+        iconWidth = MAX(iconHeight, self.iconImage.image.size.width);
+        iconHeight = MAX(iconWidth, self.iconImage.image.size.height);
     }
     if (self.selectionIndicatorImgView.image) {
         checkMarkWidth = MIN(contentAreaWidth, self.selectionIndicatorImgView.image.size.width);
@@ -88,6 +90,25 @@
     [self.contentView setAutoresizesSubviews:YES];
 
     self.iconImage.frame = CGRectMake(sidePadding, (contentAreaHeight - iconHeight)/2, iconWidth, iconHeight);
+    
+    switch (self.imageStyle) {
+        case JKExpandTableViewCellImageStyleSquare:
+            self.iconImage.layer.cornerRadius = 0;
+            self.iconImage.layer.masksToBounds = NO;
+            break;
+        case JKExpandTableViewCellImageStyleCircle:
+            self.iconImage.layer.cornerRadius = self.iconImage.frame.size.height / 2.0;
+            self.iconImage.layer.masksToBounds = YES;
+            break;
+        case JKExpandTableViewCellImageStyleRoundedRect:
+            self.iconImage.layer.cornerRadius = self.iconImage.frame.size.height * 0.2;
+            self.iconImage.layer.masksToBounds = YES;
+            break;
+        default:
+            break;
+    }
+
+    
     self.expansionIndicatorImage.frame = CGRectMake(contentAreaWidth - sidePadding - arrowWidth, (contentAreaHeight - arrowHeight)/2, arrowWidth, arrowHeight);
     CGFloat XOffset = iconWidth + sidePadding + icon2LabelPadding;
     
@@ -96,6 +117,7 @@
     auxLabel.font = [self.label.font fontWithSize:12];
     
     self.label.frame = CGRectMake(XOffset, 0, labelWidth, contentAreaHeight);
+    self.label.numberOfLines = 2;
 
     self.selectionIndicatorImgView.frame = CGRectMake(contentAreaWidth - checkMarkWidth - checkMarkPadding,
                                                  (contentRect.size.height/2)-(checkMarkHeight/2),

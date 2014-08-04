@@ -10,7 +10,7 @@
 #import "JKExpandTableViewImageStyle.h"
 
 @implementation JKSubTableViewCellCell
-@synthesize titleLabel, iconImage, selectionIndicatorImg, auxLabel;
+@synthesize titleLabel, iconImage, selectionIndicatorImg, auxLabel, imageStyle;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
@@ -24,6 +24,7 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     self.iconImage = [[UIImageView alloc] initWithFrame:CGRectZero];
+    self.imageStyle = JKExpandTableViewCellImageStyleSquare;
     [self.contentView addSubview:iconImage];
     
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -57,12 +58,12 @@
     CGFloat contentAreaHeight = self.contentView.bounds.size.height;
     CGFloat checkMarkHeight = 0.0;
     CGFloat checkMarkWidth = 0.0;
-    CGFloat iconHeight = 0.0; //  set this according to icon
-    CGFloat iconWidth = 0.0;
+    CGFloat iconHeight = 27.0; //  set this according to icon
+    CGFloat iconWidth = 27.0;
     
     if (self.iconImage.image) {
-        iconWidth = MIN(contentAreaWidth, self.iconImage.image.size.width);
-        iconHeight = MIN(contentAreaHeight, self.iconImage.image.size.height);
+        iconWidth = MAX(iconWidth, self.iconImage.image.size.width);
+        iconHeight = MAX(iconHeight, self.iconImage.image.size.height);
     }
     if (self.selectionIndicatorImg.image) {
         checkMarkWidth = MIN(contentAreaWidth, self.selectionIndicatorImg.image.size.width);
@@ -77,7 +78,24 @@
     
     self.iconImage.frame = CGRectMake(sidePadding, (contentAreaHeight - iconHeight)/2, iconWidth, iconHeight);
     //self.iconImage.backgroundColor = [UIColor blueColor];
-
+    
+    JKExpandTableViewCellImageStyle _imageStyle = self.imageStyle;
+    switch (_imageStyle) {
+        case JKExpandTableViewCellImageStyleSquare:
+            self.iconImage.layer.cornerRadius = 0;
+            self.iconImage.layer.masksToBounds = NO;
+            break;
+        case JKExpandTableViewCellImageStyleCircle:
+            self.iconImage.layer.cornerRadius = self.iconImage.frame.size.height / 2.0;
+            self.iconImage.layer.masksToBounds = YES;
+            break;
+        case JKExpandTableViewCellImageStyleRoundedRect:
+            self.iconImage.layer.cornerRadius = self.iconImage.frame.size.height * 0.2;
+            self.iconImage.layer.masksToBounds = YES;
+            break;
+        default:
+            break;
+    }
     
     
     CGFloat XOffset = iconWidth + sidePadding + icon2LabelPadding;
