@@ -7,6 +7,7 @@
 //
 
 #import "JKSubTableViewCellCell.h"
+#import "JKExpandTableViewImageStyle.h"
 
 @implementation JKSubTableViewCellCell
 @synthesize titleLabel, iconImage, selectionIndicatorImg, auxLabel;
@@ -76,7 +77,7 @@
     
     self.iconImage.frame = CGRectMake(sidePadding, (contentAreaHeight - iconHeight)/2, iconWidth, iconHeight);
     //self.iconImage.backgroundColor = [UIColor blueColor];
-    
+
     
     
     CGFloat XOffset = iconWidth + sidePadding + icon2LabelPadding;

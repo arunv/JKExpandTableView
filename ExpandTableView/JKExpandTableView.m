@@ -300,6 +300,26 @@
             UIImage *icon = [self.dataSourceDelegate iconForParentCellAtIndex:parentIndex];
             [[cell iconImage] setImage:icon];
         }
+        if ([self.dataSourceDelegate respondsToSelector:@selector(imageStyleForParentIndex:)]) {
+            JKExpandTableViewCellImageStyle imageStyle = [self.dataSourceDelegate imageStyleForParentIndex:parentIndex];
+            switch (imageStyle) {
+                case JKExpandTableViewCellImageStyleSquare:
+                    cell.iconImage.layer.cornerRadius = 0;
+                    cell.iconImage.layer.masksToBounds = NO;
+                    break;
+                case JKExpandTableViewCellImageStyleCircle:
+                    cell.iconImage.layer.cornerRadius = cell.iconImage.image.size.height / 2.0;
+                    cell.iconImage.layer.masksToBounds = YES;
+                    break;
+                case JKExpandTableViewCellImageStyleRoundedRect:
+                    cell.iconImage.layer.cornerRadius = cell.iconImage.image.size.height * 0.2;
+                    cell.iconImage.layer.masksToBounds = YES;
+                    break;
+                default:
+                    break;
+            }
+        }
+        
         if ([self.dataSourceDelegate respondsToSelector:@selector(expansionIndicatorIconForParentCellAtIndex:)]) {
             UIImage *icon = [self.dataSourceDelegate expansionIndicatorIconForParentCellAtIndex:parentIndex];
             [[cell expansionIndicatorImage] setImage:icon];
@@ -397,6 +417,24 @@
     }
     
     return [self.dataSourceDelegate auxLabelForCellAtChildIndex:childIndex withinParentCellIndex:parentIndex];
+}
+
+- (JKExpandTableViewCellImageStyle) imageStyleForParentIndex:(NSInteger) parentIndex
+{
+    if (![self.dataSourceDelegate respondsToSelector:@selector(imageStyleForParentIndex:)]) {
+        return JKExpandTableViewCellImageStyleSquare;
+    }
+    
+    return [self.dataSourceDelegate imageStyleForParentIndex:parentIndex];
+}
+
+- (JKExpandTableViewCellImageStyle) imageStyleForChildIndex:(NSInteger) childIndex withinParentCellIndex:(NSInteger)parentIndex
+{
+    if (![self.dataSourceDelegate respondsToSelector:@selector(imageStyleForChildIndex:withinParentCellIndex:)]) {
+        return JKExpandTableViewCellImageStyleSquare;
+    }
+    
+    return [self.dataSourceDelegate imageStyleForChildIndex:childIndex withinParentCellIndex:parentIndex];
 }
 
 - (UIImage *) iconForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex {

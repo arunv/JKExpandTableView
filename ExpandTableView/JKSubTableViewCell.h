@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JKExpandTableViewImageStyle.h"
 
 @protocol JKSubTableViewCellDelegate <NSObject>
 // return total number of children under this parentIndex
@@ -25,9 +26,16 @@
 // get the icon image
 - (UIImage *) iconForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex;
 
+- (JKExpandTableViewCellImageStyle) imageStyleForParentIndex:(NSInteger) parentIndex;
+
+- (JKExpandTableViewCellImageStyle) imageStyleForChildIndex:(NSInteger) childIndex withinParentCellIndex:(NSInteger)parentIndex;
+
+
 // get the aux label
 @optional
 - (NSString *) auxLabelForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex;
+
+
 
 @end
 

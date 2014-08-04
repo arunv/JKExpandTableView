@@ -110,6 +110,25 @@
     NSInteger row = [indexPath row];
     cell.titleLabel.text = [self.delegate labelForChildIndex:row underParentIndex:self.parentIndex];
     cell.iconImage.image = [self.delegate iconForChildIndex:row underParentIndex:self.parentIndex];
+    
+    JKExpandTableViewCellImageStyle imageStyle = [self.delegate imageStyleForChildIndex:row withinParentCellIndex:self.parentIndex];
+    switch (imageStyle) {
+        case JKExpandTableViewCellImageStyleSquare:
+            cell.iconImage.layer.cornerRadius = 0;
+            cell.iconImage.layer.masksToBounds = NO;
+            break;
+        case JKExpandTableViewCellImageStyleCircle:
+            cell.iconImage.layer.cornerRadius = cell.iconImage.image.size.height / 2.0;
+            cell.iconImage.layer.masksToBounds = YES;
+            break;
+        case JKExpandTableViewCellImageStyleRoundedRect:
+            cell.iconImage.layer.cornerRadius = cell.iconImage.image.size.height * 0.2;
+            cell.iconImage.layer.masksToBounds = YES;
+            break;
+        default:
+            break;
+    }
+    
     cell.selectionIndicatorImg.image = [self selectionIndicatorImgOrDefault];
     
     if ([self.delegate respondsToSelector:@selector(auxLabelForChildIndex:underParentIndex:)]) {

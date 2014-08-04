@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "JKMultiSelectSubTableViewCell.h"
+#import "JKExpandTableViewImageStyle.h"
 
 /*!
  @protocol JKExpandTableViewDelegate
@@ -143,6 +144,19 @@
  */
 
 - (NSString *) auxLabelForCellAtChildIndex:(NSInteger) childIndex withinParentCellIndex:(NSInteger) parentIndex;
+
+/*! Optional method
+ @param parentIndex The parent index in question
+ @return The format for images shown inside this cell
+ */
+- (JKExpandTableViewCellImageStyle) imageStyleForParentIndex:(NSInteger) parentIndex;
+
+/*! Optional method
+ @param childIndex The child index in question
+ @param parentIndex The parent index in question
+ @return The format for images shown inside this cell
+ */
+- (JKExpandTableViewCellImageStyle) imageStyleForChildIndex:(NSInteger) childIndex withinParentCellIndex:(NSInteger)parentIndex;
 
 /*! Optional method
  
