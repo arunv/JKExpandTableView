@@ -83,7 +83,7 @@
     CGFloat icon2LabelPadding = 6.0;
     CGFloat checkMarkPadding = 16.0;
     
-    CGFloat auxLabelWidth = 100;
+    CGFloat auxLabelWidth = 50;
     
     [self.contentView setAutoresizesSubviews:YES];
 
@@ -96,7 +96,7 @@
     auxLabel.font = [self.label.font fontWithSize:12];
     
     self.label.frame = CGRectMake(XOffset, 0, labelWidth, contentAreaHeight);
-    //self.label.backgroundColor = [UIColor redColor];
+
     self.selectionIndicatorImgView.frame = CGRectMake(contentAreaWidth - checkMarkWidth - checkMarkPadding,
                                                  (contentRect.size.height/2)-(checkMarkHeight/2),
                                                  checkMarkWidth,
