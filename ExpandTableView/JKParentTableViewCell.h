@@ -17,8 +17,10 @@
 
 @property (nonatomic,strong) UIImageView *iconImage;
 @property (nonatomic,strong) UILabel *label;
+@property (nonatomic,strong) UILabel *auxLabel;
 @property (nonatomic,strong) UIImage *selectionIndicatorImg;
 @property (nonatomic,strong) UIImageView *selectionIndicatorImgView;
+@property (nonatomic,strong) UIImageView *expansionIndicatorImage;
 @property (nonatomic) NSInteger parentIndex;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;

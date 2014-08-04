@@ -55,6 +55,8 @@
     [self setDataSource:self];
     [self setDelegate:self];
     self.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
     // Trick to hide UITableView Empty Cell Separator Lines (stuff below last nonempty cell)
     UIView *footer = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableFooterView = footer;
@@ -76,6 +78,18 @@
     for(int i = 0; i<[self.dataSourceDelegate numberOfParentCells]; i++) {
         [expansionStates addObject:@"NO"];
     }
+}
+
+- (void) reloadData
+{
+    [self setDataSourceDelegate:dataSourceDelegate];
+    [super reloadData];
+}
+
+- (void) setFrame:(CGRect)frame
+{
+    [self setDataSourceDelegate:dataSourceDelegate];
+    [super setFrame:frame];
 }
 
 - (void) expandForParentAtRow: (NSInteger) row {
@@ -145,7 +159,7 @@
             i++;
         }
     }
-    NSLog(@"parentIndexForRow row: %d parentIndex: %d", row, parentIndex);
+    //NSLog(@"parentIndexForRow row: %d parentIndex: %d", row, parentIndex);
     return parentIndex;
 }
 
@@ -192,7 +206,7 @@
             if (cell == nil) {
                 cell = [[JKMultiSelectSubTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier_MultiSelect];
             } else {
-                NSLog(@"reusing existing JKMultiSelectSubTableViewCell");
+                //NSLog(@"reusing existing JKMultiSelectSubTableViewCell");
             }
             
             if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColor)]) {
@@ -209,7 +223,7 @@
                 [cell setSelectionIndicatorImg:[self.tableViewDelegate selectionIndicatorIcon]];
             }
             
-            NSLog(@"cellForRowAtIndexPath MultiSelect parentIndex: %d", parentIndex);
+            //NSLog(@"cellForRowAtIndexPath MultiSelect parentIndex: %d", parentIndex);
             [cell setParentIndex:parentIndex];
             [cell setDelegate:self];
             [cell reload];
@@ -219,7 +233,7 @@
             if (cell == nil) {
                 cell = [[JKSingleSelectSubTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier_SingleSelect];
             } else {
-                NSLog(@"reusing existing JKSingleSelectSubTableViewCell");
+                //NSLog(@"reusing existing JKSingleSelectSubTableViewCell");
             }
             
             if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColor)]) {
@@ -241,7 +255,7 @@
                 [cell setSubTableFont:font];
             }
             
-            NSLog(@"cellForRowAtIndexPath SingleSelect parentIndex: %d", parentIndex);
+            //NSLog(@"cellForRowAtIndexPath SingleSelect parentIndex: %d", parentIndex);
             [cell setParentIndex:parentIndex];
             [cell setDelegate:self];
             [cell reload];
@@ -253,7 +267,7 @@
         if (cell == nil) {
             cell = [[JKParentTableViewCell alloc] initWithReuseIdentifier:CellIdentifier_Parent];
         } else {
-            NSLog(@"reusing existing JKParentTableViewCell");
+            //NSLog(@"reusing existing JKParentTableViewCell");
         }
         
         if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColor)]) {
@@ -278,9 +292,17 @@
         NSString * labelStr = [self.dataSourceDelegate labelForParentCellAtIndex:parentIndex];
         [[cell label] setText:labelStr];
         
+        if ([self.dataSourceDelegate respondsToSelector:@selector(auxLabelForParentCellAtIndex:)]) {
+            [[cell auxLabel] setText:[self.dataSourceDelegate auxLabelForParentCellAtIndex:parentIndex]];
+        }
+        
         if ([self.dataSourceDelegate respondsToSelector:@selector(iconForParentCellAtIndex:)]) {
             UIImage *icon = [self.dataSourceDelegate iconForParentCellAtIndex:parentIndex];
             [[cell iconImage] setImage:icon];
+        }
+        if ([self.dataSourceDelegate respondsToSelector:@selector(expansionIndicatorIconForParentCellAtIndex:)]) {
+            UIImage *icon = [self.dataSourceDelegate expansionIndicatorIconForParentCellAtIndex:parentIndex];
+            [[cell expansionIndicatorImage] setImage:icon];
         }
         
         [cell setParentIndex:parentIndex];
@@ -294,7 +316,7 @@
 #pragma mark - Table view delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = indexPath.row;
-    NSLog(@"heightForRowAtIndexPath row: %d", row);
+    //NSLog(@"heightForRowAtIndexPath row: %d", row);
     // if cell is expanded, the cell height would be a multiple of the number of child cells
     BOOL isExpansionCell = [self isExpansionCell:row];
     if (isExpansionCell) {
@@ -366,6 +388,15 @@
 
 - (NSString *) labelForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex {
     return [self.dataSourceDelegate labelForCellAtChildIndex:childIndex withinParentCellIndex:parentIndex];
+}
+
+- (NSString *) auxLabelForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex
+{
+    if (![self.dataSourceDelegate respondsToSelector:@selector(auxLabelForCellAtChildIndex:withinParentCellIndex:)]) {
+        return nil;
+    }
+    
+    return [self.dataSourceDelegate auxLabelForCellAtChildIndex:childIndex withinParentCellIndex:parentIndex];
 }
 
 - (UIImage *) iconForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex {

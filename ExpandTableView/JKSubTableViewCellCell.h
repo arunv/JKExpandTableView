@@ -17,6 +17,7 @@
 @property (nonatomic,strong) UIImageView *iconImage;
 @property (nonatomic,strong) UILabel *titleLabel;
 @property (nonatomic,strong) UIImageView *selectionIndicatorImg;
+@property (nonatomic,strong) UILabel *auxLabel;
 
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;

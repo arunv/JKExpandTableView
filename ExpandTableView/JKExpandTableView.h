@@ -114,6 +114,14 @@
  */
 - (UIImage *) iconForParentCellAtIndex:(NSInteger) parentIndex;
 
+
+/*! Optional method
+
+ @param parentIndex The parent index in question
+ @return UIImage used to indicate an open or closed state 
+ */
+- (UIImage*) expansionIndicatorIconForParentCellAtIndex:(NSInteger) parentIndex;
+
 /*! Optional method
  
  @param childIndex The child index in question
@@ -121,6 +129,20 @@
  @return UIImage shown to the left of the label for the child.
  */
 - (UIImage *) iconForCellAtChildIndex:(NSInteger) childIndex withinParentCellIndex:(NSInteger) parentIndex;
+
+/*! Optional method
+ @param parentIndex The parent index in question
+ @return The label string shown on the parent cell next to the expansion indicator
+ */
+- (NSString *) auxLabelForParentCellAtIndex:(NSInteger) parentIndex;
+
+/*! Optional method
+ @param childIndex The child index in question
+ @param parentIndex The parent index in question
+ @return The label string shown on the child cell.
+ */
+
+- (NSString *) auxLabelForCellAtChildIndex:(NSInteger) childIndex withinParentCellIndex:(NSInteger) parentIndex;
 
 /*! Optional method
  
@@ -135,6 +157,8 @@
     __weak id dataSourceDelegate;
     NSMutableArray * expansionStates;
 }
+
+- (id)initWithFrame:(CGRect)frame dataSource:dataDelegate tableViewDelegate:tableDelegate;
 
 @property(nonatomic,weak) id<JKExpandTableViewDelegate> tableViewDelegate;
 @property(nonatomic,weak,getter = getDataSourceDelegate, setter = setDataSourceDelegate:) id<JKExpandTableViewDataSource> dataSourceDelegate;

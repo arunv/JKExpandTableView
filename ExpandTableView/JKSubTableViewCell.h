@@ -24,6 +24,11 @@
 - (NSString *) labelForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex;
 // get the icon image
 - (UIImage *) iconForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex;
+
+// get the aux label
+@optional
+- (NSString *) auxLabelForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex;
+
 @end
 
 @interface JKSubTableViewCell : UITableViewCell <UITableViewDataSource,UITableViewDelegate> {

@@ -9,7 +9,7 @@
 #import "JKSubTableViewCellCell.h"
 
 @implementation JKSubTableViewCellCell
-@synthesize titleLabel, iconImage, selectionIndicatorImg;
+@synthesize titleLabel, iconImage, selectionIndicatorImg, auxLabel;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
@@ -31,6 +31,13 @@
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.contentView addSubview:titleLabel];
+    
+    self.auxLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    auxLabel.backgroundColor = [UIColor clearColor];
+    auxLabel.opaque = NO;
+    auxLabel.textColor = [UIColor darkTextColor];
+    auxLabel.textAlignment = NSTextAlignmentRight;
+    [self.contentView addSubview:auxLabel];
     
     self.selectionIndicatorImg = [[UIImageView alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:selectionIndicatorImg];
@@ -64,15 +71,19 @@
     CGFloat sidePadding = 22.0;
     CGFloat icon2LabelPadding = 6.0;
     CGFloat checkMarkPadding = 16.0;
+    CGFloat auxLabelWidth = 100.0;
     [self.contentView setAutoresizesSubviews:YES];
     
     self.iconImage.frame = CGRectMake(sidePadding, (contentAreaHeight - iconHeight)/2, iconWidth, iconHeight);
     //self.iconImage.backgroundColor = [UIColor blueColor];
     
+    
+    
     CGFloat XOffset = iconWidth + sidePadding + icon2LabelPadding;
     
-    CGFloat labelWidth = contentAreaWidth - XOffset - checkMarkWidth - checkMarkPadding;
+    CGFloat labelWidth = contentAreaWidth - XOffset - auxLabelWidth;
     self.titleLabel.frame = CGRectMake(XOffset, 0, labelWidth, contentAreaHeight);
+    self.auxLabel.frame = CGRectMake(contentAreaWidth - sidePadding - auxLabelWidth, 0, auxLabelWidth, contentAreaHeight);
 
     //self.titleLabel.backgroundColor = [UIColor purpleColor];
     //self.selectionIndicatorImg.backgroundColor = [UIColor yellowColor];

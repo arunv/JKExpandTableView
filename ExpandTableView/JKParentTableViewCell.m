@@ -10,7 +10,7 @@
 
 @implementation JKParentTableViewCell
 
-@synthesize label,iconImage,selectionIndicatorImgView,parentIndex,selectionIndicatorImg;
+@synthesize label,iconImage,selectionIndicatorImgView,parentIndex,selectionIndicatorImg,expansionIndicatorImage,auxLabel;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier; {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
@@ -34,10 +34,20 @@
     label.textAlignment = NSTextAlignmentLeft;
     [self.contentView addSubview:label];
     
+    self.auxLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    auxLabel.backgroundColor = [UIColor clearColor];
+    auxLabel.opaque = NO;
+    auxLabel.textColor = [UIColor darkTextColor];
+    auxLabel.textAlignment = NSTextAlignmentRight;
+    [self.contentView addSubview:auxLabel];
+    
     self.selectionIndicatorImgView = [[UIImageView alloc] initWithFrame:CGRectZero];
+
     //[self.selectionIndicatorImgView setContentMode:UIViewContentModeCenter];
     [self.contentView addSubview:selectionIndicatorImgView];
     
+    self.expansionIndicatorImage = [[UIImageView alloc] initWithFrame:CGRectZero];
+    [self.contentView addSubview:expansionIndicatorImage];
     return self;
 }
 
@@ -52,6 +62,8 @@
     CGFloat contentAreaHeight = self.contentView.bounds.size.height;
     CGFloat checkMarkHeight = 0.0;
     CGFloat checkMarkWidth = 0.0;
+    CGFloat arrowWidth = 0.0;
+    CGFloat arrowHeight = 0.0;
     CGFloat iconHeight = 0.0; //  set this according to icon
     CGFloat iconWidth = 0.0;
     if (self.iconImage.image) {
@@ -62,16 +74,27 @@
         checkMarkWidth = MIN(contentAreaWidth, self.selectionIndicatorImgView.image.size.width);
         checkMarkHeight = MIN(contentAreaHeight, self.selectionIndicatorImgView.image.size.height);
     }
+    if (self.expansionIndicatorImage.image) {
+        arrowWidth = MIN(contentAreaWidth, self.expansionIndicatorImage.image.size.width);
+        arrowHeight = MIN(contentAreaWidth, self.expansionIndicatorImage.image.size.height);
+    }
     
     CGFloat sidePadding = 6.0;
     CGFloat icon2LabelPadding = 6.0;
     CGFloat checkMarkPadding = 16.0;
+    
+    CGFloat auxLabelWidth = 100;
+    
     [self.contentView setAutoresizesSubviews:YES];
 
     self.iconImage.frame = CGRectMake(sidePadding, (contentAreaHeight - iconHeight)/2, iconWidth, iconHeight);
+    self.expansionIndicatorImage.frame = CGRectMake(contentAreaWidth - sidePadding - arrowWidth, (contentAreaHeight - arrowHeight)/2, arrowWidth, arrowHeight);
     CGFloat XOffset = iconWidth + sidePadding + icon2LabelPadding;
     
-    CGFloat labelWidth = contentAreaWidth - XOffset - checkMarkWidth - checkMarkPadding;
+    CGFloat labelWidth = contentAreaWidth - XOffset - checkMarkWidth - checkMarkPadding - auxLabelWidth;
+    self.auxLabel.frame = CGRectMake(vLeft(self.expansionIndicatorImage) - auxLabelWidth - icon2LabelPadding,  0, auxLabelWidth, contentAreaHeight);
+    auxLabel.font = [self.label.font fontWithSize:12];
+    
     self.label.frame = CGRectMake(XOffset, 0, labelWidth, contentAreaHeight);
     //self.label.backgroundColor = [UIColor redColor];
     self.selectionIndicatorImgView.frame = CGRectMake(contentAreaWidth - checkMarkWidth - checkMarkPadding,
@@ -83,14 +106,14 @@
 - (void)rotateIconToExpanded {
     [UIView beginAnimations:@"rotateDisclosure" context:nil];
     [UIView setAnimationDuration:0.2];
-    iconImage.transform = CGAffineTransformMakeRotation(M_PI * 2.5);
+    expansionIndicatorImage.transform = CGAffineTransformMakeRotation(M_PI);
     [UIView commitAnimations];
 }
 
 - (void)rotateIconToCollapsed {
     [UIView beginAnimations:@"rotateDisclosure" context:nil];
     [UIView setAnimationDuration:0.2];
-    iconImage.transform = CGAffineTransformMakeRotation(M_PI * 2);
+    expansionIndicatorImage.transform = CGAffineTransformMakeRotation(0);
     [UIView commitAnimations];
 }
 

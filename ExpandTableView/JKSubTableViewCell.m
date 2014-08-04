@@ -78,7 +78,7 @@
 
 - (UIImage *) selectionIndicatorImgOrDefault {
     if (!self.selectionIndicatorImg) {
-        self.selectionIndicatorImg = [UIImage imageNamed:@"checkmark"];
+//        self.selectionIndicatorImg = [UIImage imageNamed:@"checkmark"];
     }
     return self.selectionIndicatorImg;
 }
@@ -104,13 +104,17 @@
     if (cell == nil) {
         cell = [[JKSubTableViewCellCell alloc] initWithReuseIdentifier:CellIdentifier];
     } else {
-        NSLog(@"reusing existing JKSubTableViewCellCell");
+       // NSLog(@"reusing existing JKSubTableViewCellCell");
     }
     
     NSInteger row = [indexPath row];
     cell.titleLabel.text = [self.delegate labelForChildIndex:row underParentIndex:self.parentIndex];
     cell.iconImage.image = [self.delegate iconForChildIndex:row underParentIndex:self.parentIndex];
     cell.selectionIndicatorImg.image = [self selectionIndicatorImgOrDefault];
+    
+    if ([self.delegate respondsToSelector:@selector(auxLabelForChildIndex:underParentIndex:)]) {
+        cell.auxLabel.text = [self.delegate auxLabelForChildIndex:row underParentIndex:self.parentIndex];
+    }
     
     BOOL isRowSelected = [self.delegate isSelectedForChildIndex:row underParentIndex:self.parentIndex];
     
@@ -123,10 +127,12 @@
     [cell setCellBackgroundColor:bgColor];
     [cell setCellForegroundColor:fgColor];
     [cell.titleLabel setFont:font];
+    [cell.auxLabel setFont:font];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //cell.textLabel.textColor = [UIColor grayColor];
-    cell.textLabel.font = [UIFont systemFontOfSize:16];
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.auxLabel.font = [UIFont systemFontOfSize:12];
     //[cell setupDisplay];
     return cell;
 }
