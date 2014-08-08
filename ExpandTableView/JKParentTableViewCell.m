@@ -68,9 +68,11 @@
     CGFloat arrowHeight = 0.0;
     CGFloat iconHeight = 27.0; //  set this according to icon
     CGFloat iconWidth = 27.0;
+    self.iconImage.contentMode = UIViewContentModeScaleToFill;
     if (self.iconImage.image) {
-        iconWidth = MAX(iconHeight, self.iconImage.image.size.width);
-        iconHeight = MAX(iconWidth, self.iconImage.image.size.height);
+        if (self.iconImage.image.size.width < iconWidth || self.iconImage.image.size.height < iconHeight) {
+            self.iconImage.contentMode = UIViewContentModeCenter;
+        }
     }
     if (self.selectionIndicatorImgView.image) {
         checkMarkWidth = MIN(contentAreaWidth, self.selectionIndicatorImgView.image.size.width);

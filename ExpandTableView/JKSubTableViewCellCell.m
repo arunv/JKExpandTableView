@@ -61,9 +61,11 @@
     CGFloat iconHeight = 27.0; //  set this according to icon
     CGFloat iconWidth = 27.0;
     
+    self.iconImage.contentMode = UIViewContentModeScaleToFill;
     if (self.iconImage.image) {
-        iconWidth = MAX(iconWidth, self.iconImage.image.size.width);
-        iconHeight = MAX(iconHeight, self.iconImage.image.size.height);
+        if (self.iconImage.image.size.width < iconWidth || self.iconImage.image.size.height < iconHeight) {
+            self.iconImage.contentMode = UIViewContentModeCenter;
+        }
     }
     if (self.selectionIndicatorImg.image) {
         checkMarkWidth = MIN(contentAreaWidth, self.selectionIndicatorImg.image.size.width);
@@ -77,7 +79,6 @@
     [self.contentView setAutoresizesSubviews:YES];
     
     self.iconImage.frame = CGRectMake(sidePadding, (contentAreaHeight - iconHeight)/2, iconWidth, iconHeight);
-    //self.iconImage.backgroundColor = [UIColor blueColor];
     
     JKExpandTableViewCellImageStyle _imageStyle = self.imageStyle;
     switch (_imageStyle) {
