@@ -119,6 +119,7 @@
 
 - (void)setCellForegroundColor:(UIColor *) foregroundColor {
     titleLabel.textColor = foregroundColor;
+    auxLabel.textColor =foregroundColor;
 }
 
 - (void)setCellBackgroundColor:(UIColor *) backgroundColor {

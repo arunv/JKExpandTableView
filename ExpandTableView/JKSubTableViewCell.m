@@ -128,8 +128,17 @@
         cell.selectionIndicatorImg.hidden = YES;
     }
     
-    [cell setCellBackgroundColor:bgColor];
-    [cell setCellForegroundColor:fgColor];
+    if ([self.delegate respondsToSelector:@selector(backgroundColorForCellAtChildIndex:withInParentCellIndex:)]) {
+        [cell setCellBackgroundColor:[self.delegate backgroundColorForCellAtChildIndex:row withInParentCellIndex:self.parentIndex]];
+    } else {
+        [cell setCellBackgroundColor:bgColor];
+    }
+    if ([self.delegate respondsToSelector:@selector(foregroundColorForCellAtChildIndex:withInParentCellIndex:)]) {
+        [cell setCellBackgroundColor:[self.delegate foregroundColorForCellAtChildIndex:row withInParentCellIndex:self.parentIndex]];
+    } else {
+        [cell setCellForegroundColor:fgColor];
+    }
+
     [cell.titleLabel setFont:font];
     [cell.auxLabel setFont:font];
     

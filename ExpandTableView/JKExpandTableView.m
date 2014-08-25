@@ -210,12 +210,12 @@
             }
             
             if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColor)]) {
-                UIColor * bgColor = [self.tableViewDelegate backgroundColor];
+                UIColor * bgColor = [self.tableViewDelegate backgroundColorForParentCellAtIndex:parentIndex];
                 [cell setSubTableBackgroundColor:bgColor];
             }
             
-            if ([self.tableViewDelegate respondsToSelector:@selector(foregroundColor)]) {
-                UIColor * fgColor = [self.tableViewDelegate foregroundColor];
+            if ([self.tableViewDelegate respondsToSelector:@selector(foregroundColorForParentCellAtIndex:)]) {
+                UIColor * fgColor = [self.tableViewDelegate foregroundColorForParentCellAtIndex:parentIndex];
                 [cell setSubTableForegroundColor:fgColor];
             }
             
@@ -236,13 +236,13 @@
                 //NSLog(@"reusing existing JKSingleSelectSubTableViewCell");
             }
             
-            if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColor)]) {
-                UIColor * bgColor = [self.tableViewDelegate backgroundColor];
+            if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColorForParentCellAtIndex:)]) {
+                UIColor * bgColor = [self.tableViewDelegate backgroundColorForParentCellAtIndex:parentIndex];
                 [cell setSubTableBackgroundColor:bgColor];
             }
             
-            if ([self.tableViewDelegate respondsToSelector:@selector(foregroundColor)]) {
-                UIColor * fgColor = [self.tableViewDelegate foregroundColor];
+            if ([self.tableViewDelegate respondsToSelector:@selector(foregroundColorForParentCellAtIndex:)]) {
+                UIColor * fgColor = [self.tableViewDelegate foregroundColorForParentCellAtIndex:parentIndex];
                 [cell setSubTableForegroundColor:fgColor];
             }
             
@@ -270,13 +270,13 @@
             //NSLog(@"reusing existing JKParentTableViewCell");
         }
         
-        if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColor)]) {
-            UIColor * bgColor = [self.tableViewDelegate backgroundColor];
+        if ([self.tableViewDelegate respondsToSelector:@selector(backgroundColorForParentCellAtIndex:)]) {
+            UIColor * bgColor = [self.tableViewDelegate backgroundColorForParentCellAtIndex:parentIndex];
             [cell setCellBackgroundColor:bgColor];
         }
         
-        if ([self.tableViewDelegate respondsToSelector:@selector(foregroundColor)]) {
-            UIColor * fgColor = [self.tableViewDelegate foregroundColor];
+        if ([self.tableViewDelegate respondsToSelector:@selector(foregroundColorForParentCellAtIndex:)]) {
+            UIColor * fgColor = [self.tableViewDelegate foregroundColorForParentCellAtIndex:parentIndex];
             [cell setCellForegroundColor:fgColor];
         }
         
@@ -419,6 +419,25 @@
     }
     
     return [self.dataSourceDelegate imageStyleForChildIndex:childIndex withinParentCellIndex:parentIndex];
+}
+
+- (UIColor*) backgroundColorForCellAtChildIndex:(NSInteger)childIndex withInParentCellIndex:(NSInteger)parentIndex
+{
+    if (![self.tableViewDelegate respondsToSelector:@selector(backgroundColorForCellAtChildIndex:withInParentCellIndex:)]) {
+        return [UIColor clearColor];
+    }
+    
+    return [self.tableViewDelegate backgroundColorForCellAtChildIndex:childIndex withInParentCellIndex:parentIndex];
+    
+}
+
+- (UIColor*) foregroundColorForCellAtChildIndex:(NSInteger)childIndex withInParentCellIndex:(NSInteger)parentIndex
+{
+    if (![self.tableViewDelegate respondsToSelector:@selector(foregroundColorForCellAtChildIndex:withInParentCellIndex:)]) {
+        return [UIColor clearColor];
+    }
+    
+    return [self.tableViewDelegate foregroundColorForCellAtChildIndex:childIndex withInParentCellIndex:parentIndex];
 }
 
 - (UIImage *) iconForChildIndex:(NSInteger)childIndex underParentIndex:(NSInteger)parentIndex {

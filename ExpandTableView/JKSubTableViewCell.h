@@ -30,6 +30,8 @@
 
 - (JKExpandTableViewCellImageStyle) imageStyleForChildIndex:(NSInteger) childIndex withinParentCellIndex:(NSInteger)parentIndex;
 
+- (UIColor *) backgroundColorForCellAtChildIndex:(NSInteger) childIndex withInParentCellIndex:(NSInteger) parentIndex;
+- (UIColor *) foregroundColorForCellAtChildIndex:(NSInteger) childIndex withInParentCellIndex:(NSInteger) parentIndex;
 
 // get the aux label
 @optional

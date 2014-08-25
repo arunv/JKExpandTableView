@@ -47,12 +47,17 @@
  
  @return UIColor 
  */
-- (UIColor *) foregroundColor;
+- (UIColor *) foregroundColorForParentCellAtIndex:(NSInteger)parentIndex;
+
+- (UIColor *) foregroundColorForCellAtChildIndex:(NSInteger) childIndex withInParentCellIndex:(NSInteger) parentIndex;
 /*! Optional method to set custom foreground color.
  
  @return UIColor
  */
-- (UIColor *) backgroundColor;
+- (UIColor *) backgroundColorForParentCellAtIndex:(NSInteger)parentIndex;
+
+- (UIColor *) backgroundColorForCellAtChildIndex:(NSInteger) childIndex withInParentCellIndex:(NSInteger) parentIndex;
+
 /*! Optional method to set a custom selection indicator icon.
  
  @return UIImage
