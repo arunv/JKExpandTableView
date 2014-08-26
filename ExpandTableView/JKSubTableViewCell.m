@@ -134,7 +134,7 @@
         [cell setCellBackgroundColor:bgColor];
     }
     if ([self.delegate respondsToSelector:@selector(foregroundColorForCellAtChildIndex:withInParentCellIndex:)]) {
-        [cell setCellBackgroundColor:[self.delegate foregroundColorForCellAtChildIndex:row withInParentCellIndex:self.parentIndex]];
+        [cell setCellForegroundColor:[self.delegate foregroundColorForCellAtChildIndex:row withInParentCellIndex:self.parentIndex]];
     } else {
         [cell setCellForegroundColor:fgColor];
     }
